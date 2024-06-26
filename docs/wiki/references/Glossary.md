@@ -1,142 +1,103 @@
-> \[!WARNING\]
-> This page is a work in progress.
-
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [Terms](#terms)
-  - [Engine time](#engine-time)
-  - [Event streaming](#event-streaming)
-  - [Time series](#time-series)
+  - [Event stream processing](#event-stream-processing)
+  - [Time Series](#time-series)
   - [Tick](#tick)
-  - [Node](#node)
-  - [Graph](#graph)
+  - [Node (`csp.node`)](#node-cspnode)
+  - [Graph (`csp.graph`)](#graph-cspgraph)
+  - [Edge](#edge)
+  - [Engine time](#engine-time)
   - [Alarm](#alarm)
   - [Adapter](#adapter)
-  - [Realtime](#realtime)
-  - [Wiring (or graph building time)](#wiring-or-graph-building-time)
-  - [Graph run time](#graph-run-time)
-  - [Ticked (as in csp.ticked)](#ticked-as-in-cspticked)
-  - [Valid (as in csp.valid)](#valid-as-in-cspvalid)
-  - [Push mode](#push-mode)
-  - [Edge](#edge)
-  - [Delayed edge](#delayed-edge)
-  - [Feedback](#feedback)
-  - [Struct](#struct)
-  - [List basket](#list-basket)
-  - [Dict basket](#dict-basket)
+  - [Wiring (Graph build-time)](#wiring-graph-build-time)
+  - [Graph run-time](#graph-run-time)
+  - [Baskets](#baskets)
   - [Dynamic graph](#dynamic-graph)
-  - [Push input adapter](#push-input-adapter)
-  - [Pull input adapter](#pull-input-adapter)
-  - [Output adapter](#output-adapter)
-  - [Managed sim adapter](#managed-sim-adapter)
-  - [Adapter manager](#adapter-manager)
 
 ## Terms
 
-<!-- TODO: Organize terms in conceptual or alphabetical order -->
+### Event stream processing
 
-### Engine time
+The practice of processing continuous, real-time events.
 
-The CSP engine always maintains its current view of time.
-The current time of the engine can be accessed at any time within a `csp.node` by calling `csp.now()`
+Real-time events can be found everywhere, including mouse clicks on a website and weather data recordings. Processing the events as they change is valuable to gather meaningful insights and affect timely changes in other parts of the system.
 
-### Event streaming
+### Time Series
 
-<!--TODO -->
+Data that is tracked over a time period and indexed using time stamps.
 
-### Time series
-
-<!--TODO -->
+Real-time events are often expressed as Time Series data. CSP works almost entirely with Time Series values, and other types of data are converted into Time Series values.
 
 ### Tick
 
-<!--TODO -->
+A change in real-time events is called a "tick" in CSP.
+Ticking [edge](#edge)s drive the flow of a CSP program.
 
-### Node
+The term "tick" is derived from [Stock Tickers](https://en.wikipedia.org/wiki/Ticker_symbol).
 
-<!--TODO -->
+Relevant `csp.node` operations:
 
-### Graph
+- `csp.ticked` - returns `True` if a value has ticked
+- `csp.valid` - returns `True` if a value has ticked at least once
 
-<!--TODO -->
+### Node (`csp.node`)
 
-### Alarm
+Individual computing units of a CSP program are called nodes. They are defined as Python functions decorated with `csp.node` and are executed when a "ticking" condition is met.
 
-<!--TODO -->
+Learn more in [CSP Node concepts](https://github.com/Point72/csp/wiki/CSP-Node).
 
-### Adapter
+### Graph (`csp.graph`)
 
-<!--TODO -->
+A CSP graph consists of multiple connected nodes and describes a complete CSP workflow.
 
-### Realtime
-
-<!--TODO -->
-
-### Wiring (or graph building time)
-
-<!--TODO -->
-
-### Graph run time
-
-<!--TODO -->
-
-### Ticked (as in csp.ticked)
-
-<!--TODO -->
-
-### Valid (as in csp.valid)
-
-<!--TODO -->
-
-### Push mode
-
-<!--TODO -->
+Python functions decorated with `csp.graph` create a graph. These are executed only once for constructing the graph. `csp.show_graph` can be used to view the constructed graph.
 
 ### Edge
 
-<!--TODO -->
+Elements that connect nodes in a graph, and tick to trigger the execution of nodes.
 
-### Delayed edge
+You can manipulate Edges directly with some methods in [Functional Methods API](https://github.com/Point72/csp/wiki/Functional-Methods-API).
 
-<!--TODO -->
+### Engine time
 
-### Feedback
+The CSP engine maintains an independent view of the current time, called the engine time. The current time of the engine can be accessed at any time within a `csp.node` by calling `csp.now()`.
 
-<!--TODO -->
+### Alarm
 
-### Struct
+A Time Series input set within a node. It can be scheduled to tick after a certain time interval.
 
-<!--TODO -->
+Learn more in [Anatomy of a CSP node](https://github.com/Point72/csp/wiki/CSP-Node#anatomy-of-a-cspnode).
 
-### List basket
+### Adapter
 
-<!--TODO -->
+The mechanism to extend CSP's functionality.
 
-### Dict basket
+Several common operations like support to Input-Output different data formats are implements as Adapters.
 
-<!--TODO -->
+Learn more in [Adapters concepts](https://github.com/Point72/csp/wiki/Adapters)
+
+### Wiring (Graph build-time)
+
+CSP constructs a graph describing and setting-up the workflow before execution, this is called wiring or graph build-ime.
+
+There are several CSP components that are only required during graph build time, especially when [writing your own adapters](https://github.com/Point72/csp/wiki/Write-Historical-Input-Adapters).
+
+### Graph run-time
+
+Execution of the pre-constructed graph by the CSP engine is called run-time.
+
+### Baskets
+
+A collection of Time Series which can be passed in as a single argument. Individual Time Series in a basket can tick independently, and they can be looked at and reacted to individually or as a collection. Baskets can either be `list` baskets or `dict` baskets
+
+Learn more in [CSP Node concepts](https://github.com/Point72/csp/wiki/CSP-Node#basket-inputs)
+
+CSP also has `DynamicBasket`s that can change their shape over time. Learn more in [Create Dynamic Baskets](https://github.com/Point72/csp/wiki/Create-Dynamic-Baskets).
 
 ### Dynamic graph
 
-<!--TODO -->
+A graph that can change it's shape during execution.
 
-### Push input adapter
-
-<!--TODO -->
-
-### Pull input adapter
-
-<!--TODO -->
-
-### Output adapter
-
-<!--TODO -->
-
-### Managed sim adapter
-
-<!--TODO -->
-
-### Adapter manager
-
-<!--TODO -->
+Learn more [this dynamic graphs example](https://github.com/Point72/csp/blob/main/examples/06_advanced/e1_dynamic.py).
