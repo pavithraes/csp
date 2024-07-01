@@ -12,7 +12,7 @@
   - [Alarm](#alarm)
   - [Adapter](#adapter)
   - [Wiring (Graph build-time)](#wiring-graph-build-time)
-  - [Graph run-time](#graph-run-time)
+  - [Graph runtime](#graph-runtime)
   - [Baskets](#baskets)
   - [Dynamic graph](#dynamic-graph)
 
@@ -22,11 +22,11 @@
 
 The practice of processing continuous, real-time events.
 
-Real-time events can be found everywhere, including mouse clicks on a website and weather data recordings. Processing the events as they change is valuable to gather meaningful insights and affect timely changes in other parts of the system.
+Real-time events can be found everywhere, including mouse clicks on a website and weather data recordings. Processing these events as they change is valuable to gather meaningful insights and affect timely changes in other parts of the system.
 
 ### Time Series
 
-Data that is tracked over a time period and indexed using time stamps.
+Data that is tracked over a time period and indexed using timestamps.
 
 Real-time events are often expressed as Time Series data. CSP works almost entirely with Time Series values, and other types of data are converted into Time Series values.
 
@@ -37,7 +37,7 @@ Ticking [edge](#edge)s drive the flow of a CSP program.
 
 The term "tick" is derived from [Stock Tickers](https://en.wikipedia.org/wiki/Ticker_symbol).
 
-Relevant `csp.node` operations:
+Some relevant `csp.node` operations:
 
 - `csp.ticked` - returns `True` if a value has ticked
 - `csp.valid` - returns `True` if a value has ticked at least once
@@ -74,7 +74,7 @@ Learn more in [Anatomy of a CSP node](https://github.com/Point72/csp/wiki/CSP-No
 
 The mechanism to extend CSP's functionality.
 
-Several common operations like support to Input-Output different data formats are implements as Adapters.
+Several common operations like support for different Input/Output data formats are implements as Adapters.
 
 Learn more in [Adapters concepts](https://github.com/Point72/csp/wiki/Adapters)
 
@@ -84,13 +84,13 @@ CSP constructs a graph describing and setting-up the workflow before execution, 
 
 There are several CSP components that are only required during graph build time, especially when [writing your own adapters](https://github.com/Point72/csp/wiki/Write-Historical-Input-Adapters).
 
-### Graph run-time
+### Graph runtime
 
-Execution of the pre-constructed graph by the CSP engine is called run-time.
+Execution of the pre-constructed graph by the CSP engine is called runtime.
 
 ### Baskets
 
-A collection of Time Series which can be passed in as a single argument. Individual Time Series in a basket can tick independently, and they can be looked at and reacted to individually or as a collection. Baskets can either be `list` baskets or `dict` baskets
+A collection of Time Series values that can be passed in as a single argument. Individual values can tick independently, and can be processed individually or collectively. Baskets can either be `list` or `dict` type.
 
 Learn more in [CSP Node concepts](https://github.com/Point72/csp/wiki/CSP-Node#basket-inputs)
 
