@@ -1,6 +1,6 @@
 CSP offers several built-in generic, mathematical, and statistical nodes that are often required in streaming workflows. This allows you to write applications quickly, and update and expand them as required by including new nodes.
 
-In this tutorial, you build a CSP program to track a sample shopping cart and purchases, where a 10% discount if the purchase is made within 1 minute. You will learn to create and use composite data types, and add more functionality to nodes.
+In this tutorial, you build a CSP program to track a sample shopping cart and purchases, where a 10% discount is applied if the purchase is made within 1 minute. You will learn to create and use composite data types, and add more functionality to nodes.
 
 Check out the complete example: [Retail cart example](examples/01_basics/e5_retail_cart.py).
 
@@ -28,7 +28,7 @@ You can use `csp.state` to declare stateful variables that are bound to a node.
 > \[!TIP\]
 > By convention, state variables are prefixed with `s_`.
 
-A CSP node can also return multiple named outputs, denoted as `csp.Outputs` type, created using the `csp.output` function. The individual return values can then be accessed with dot notation.
+A CSP node can also return multiple named outputs, denoted as `csp.Outputs` type, ticked by using the `csp.output` function.
 
 ```python
 @csp.node
@@ -46,7 +46,7 @@ def update_cart(event: ts[Cart], discount: ts[float]) -> csp.Outputs(total = ts[
             s_cart_items += event.qty
         else:
             s_cart_total -= PRODUCTS[event.product] * event.qty
-            s_cart_items += event.qty
+            s_cart_items -= event.qty
 
     final_total = s_cart_total * discount
 
@@ -61,7 +61,7 @@ def update_cart(event: ts[Cart], discount: ts[float]) -> csp.Outputs(total = ts[
 
 To apply a discount if the purchase is made in under a minute, you need to keep track of time from the first update to the cart.
 
-You can do this with an alarm in CSP. An alarm is a new Time Series input bound to a node that ticks at scheduled intervals. It can be created using `csp.alarm()` within an `csp.alarms()` context.
+You can do this with an alarm in CSP. An alarm is a new Time Series input bound to a node that can tick at a pre-scheduled time. It can be created using `csp.alarm()` within an `csp.alarms()` context.
 
 ```python
 @csp.node
